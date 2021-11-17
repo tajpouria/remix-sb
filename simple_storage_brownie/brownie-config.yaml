@@ -1,0 +1,4 @@
+dotenv: .env
+wallets:
+        owner_private_key: ${OWNER_PRIVATE_KEY}
+
