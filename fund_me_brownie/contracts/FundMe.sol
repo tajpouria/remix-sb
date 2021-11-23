@@ -8,7 +8,7 @@ contract FundMe {
     AggregatorV3Interface public priceFeed;
 
     constructor(address _priceFeedAddr) public {
-        priceFeed = AggregatorV3Interaface(_priceFeedAddr);
+        priceFeed = AggregatorV3Interface(_priceFeedAddr);
     }
 
     function priceFeedVersion() public view returns (uint256) {

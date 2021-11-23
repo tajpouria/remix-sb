@@ -5,3 +5,5 @@ compiler:
     remappings:
       - "@chainlink=smartcontractkit/chainlink-brownie-contracts@1.1.1"
 dotenv: .env
+wallets:
+  owner_private_key: ${OWNER_PRIVATE_KEY}
