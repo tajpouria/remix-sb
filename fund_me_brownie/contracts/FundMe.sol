@@ -36,7 +36,7 @@ contract FundMe {
         funders.push(msg.sender);
     }
 
-    function withdraw() external payable onlyOwner {
+    function withdraw() external onlyOwner {
         payable(msg.sender).transfer(address(this).balance);
 
         for (uint256 i = 0; i < funders.length; i++) {

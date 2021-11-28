@@ -5,5 +5,13 @@ compiler:
     remappings:
       - "@chainlink=smartcontractkit/chainlink-brownie-contracts@1.1.1"
 dotenv: .env
+networks:
+  development:
+    verify_src: False
+  ganache-local:
+    verify_src: False
+  rinkeby:
+    price_feed_addr: "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e"
+    verify_src: True
 wallets:
   owner_private_key: ${OWNER_PRIVATE_KEY}
