@@ -5,8 +5,15 @@ def get_local_chain_envs():
     return ["development", "ganache-local"]
 
 
+def get_local_fork_chain_envs():
+    return ["mainnet-fork-dev"]
+
+
 def get_owner_acc():
-    if network.show_active() in get_local_chain_envs():
+    if (
+        network.show_active() in get_local_chain_envs()
+        or network.show_active() in get_local_fork_chain_envs()
+    ):
         return accounts[0]
 
     return accounts.add(config["wallets"]["owner_private_key"])

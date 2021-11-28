@@ -13,5 +13,8 @@ networks:
   rinkeby:
     price_feed_addr: "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e"
     verify_src: True
+  mainnet-fork-dev:
+    price_feed_addr: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
+    verify_src: False
 wallets:
   owner_private_key: ${OWNER_PRIVATE_KEY}
