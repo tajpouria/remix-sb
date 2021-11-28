@@ -46,6 +46,10 @@ contract FundMe {
         funders = new address[](0);
     }
 
+    function getEntranceRate() external view returns (uint256) {
+        return (minUsdThreshold * (1*10**18)) / priceFeedLatestRoundRate();
+    }
+
     function priceFeedVersion() public view returns (uint256) {
         return priceFeed.version();
     }
@@ -54,7 +58,7 @@ contract FundMe {
         return _value * priceFeedLatestRoundRate();
     }
 
-    function priceFeedLatestRoundRate() private view returns (uint256) {
+    function priceFeedLatestRoundRate() public view returns (uint256) {
         (, int256 answer, , , ) = priceFeed.latestRoundData();
         return uint256(answer) * (10**10);
     }
