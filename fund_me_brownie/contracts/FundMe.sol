@@ -8,7 +8,7 @@ contract FundMe {
     uint256 public constant minUsdThreshold = 5 * (10**18);
 
     address[] funders;
-    mapping(address => uint256) fundersDict;
+    mapping(address => uint256) public fundersDict;
 
     address owner;
     AggregatorV3Interface public priceFeed;
@@ -47,7 +47,7 @@ contract FundMe {
     }
 
     function getEntranceRate() external view returns (uint256) {
-        return (minUsdThreshold * (1*10**18)) / priceFeedLatestRoundRate();
+        return (minUsdThreshold * (1 * 10**18)) / priceFeedLatestRoundRate();
     }
 
     function priceFeedVersion() public view returns (uint256) {
