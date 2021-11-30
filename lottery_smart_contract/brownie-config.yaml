@@ -1,7 +1,11 @@
 dependencies:
-  - smartcontractkit/chainlink-brownie-contracts@1.1.1
+  - smartcontractkit/chainlink-brownie-contracts@0.2.2
 compiler:
   solc:
     remappings:
-      - "@chainlink=smartcontractkit/chainlink-brownie-contracts@1.1.1"
+      - "@chainlink=smartcontractkit/chainlink-brownie-contracts@0.2.2"
 dotenv: .env
+networks:
+  mainnet-fork:
+    price_feed_addr: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
+wallets: {}

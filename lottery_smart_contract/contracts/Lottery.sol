@@ -13,10 +13,9 @@ contract Lottery {
         priceFeedInterface = AggregatorV3Interface(priceFeedAddr);
     }
 
-    function getEntranceFee() public returns (uint256) {
-        // (50$ * 10**18) / 4400 00000000 0000000000
+    function getEntranceFee() public view returns (uint256) {
         (, int256 answer, , , ) = priceFeedInterface.latestRoundData();
-        uint256 latestUsdPrice = answer * 10 * 10**10;
+        uint256 latestUsdPrice = uint256(answer) * 10 * 10**10;
 
         return (usdThreshold * 10**18) / latestUsdPrice;
     }
