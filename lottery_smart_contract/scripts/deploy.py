@@ -1,10 +1,12 @@
 from brownie import Lottery
-from scripts.utils import get_owner_accout, get_price_feed_addr
+from scripts.utils import get_owner_accout, get_price_feed_addr, get_contract
 
 
 def deploy_lottery():
+    mock_v3_aggregator = get_contract("MockV3Aggregator")
+
     lottery = Lottery.deploy(
-        get_price_feed_addr(),
+        mock_v3_aggregator.address,
         {"from": get_owner_accout()},
     )
 

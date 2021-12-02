@@ -21,12 +21,12 @@ contract Lottery is VRFConsumerBase, Ownable {
     uint256 internal fee = 0.1 * 10**18;
 
     constructor(
-        address priceFeedAddr,
+        address _priceFeed,
         address _vrfCoordinator,
         address _link,
         bytes32 _keyHash
     ) VRFConsumerBase(_vrfCoordinator, _link) {
-        priceFeedInterface = AggregatorV3Interface(priceFeedAddr);
+        priceFeedInterface = AggregatorV3Interface(_priceFeed);
         lotteryState = LotteryState.Closed;
         keyHash = _keyHash;
     }
