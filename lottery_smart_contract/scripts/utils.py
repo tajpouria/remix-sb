@@ -10,25 +10,39 @@ from brownie import (
 from brownie.network.main import show_active
 
 
-def get_fork_chain_envs() -> list[str]:
+def get_key_hash():
+    return config["networks"][network.show_active()]["key_hash"]
+
+
+def get_verify():
+    return config["networks"][network.show_active()].get("verify", False)
+
+
+def get_fork_chain_envs():
     return ["mainnet-fork"]
 
 
-def get_local_chain_env() -> list[str]:
+def get_local_chain_env():
     return ["development"]
 
 
 def get_owner_accout() -> network.account.LocalAccount:
-    if network.show_active() in get_fork_chain_envs():
+    active_network = network.show_active()
+    if (
+        active_network in get_fork_chain_envs()
+        or active_network in get_local_chain_env()
+    ):
         return accounts[0]
 
-    return accounts.add(config.wallets[network.show_active()].get("owner_account_addr"))
+    return accounts.add(config["wallets"][network.show_active()]["owner_private_key"])
 
 
 def get_contract(
     contract_name: str,
     contract_to_mock={
         "MockV3Aggregator": MockV3Aggregator,
+        "LinkToken": LinkToken,
+        "VRFCoordinatorMock": VRFCoordinatorMock,
     },
 ):
     contract_type = contract_to_mock[contract_name]
@@ -41,7 +55,7 @@ def get_contract(
     try:
         return Contract.from_abi(
             contract_type._name,
-            config.networks[show_active()][contract_name],
+            config["networks"][show_active()][contract_name],
             contract_type.abi,
         )
     except KeyError:
@@ -51,5 +65,6 @@ def get_contract(
 
 
 def deploy_contracts():
-    MockV3Aggregator.deploy(8, 4530_00_000_000)
-    VRFCoordinatorMock.deploy()
+    MockV3Aggregator.deploy(8, 4530_00_000_000, {"from": get_owner_accout()})
+    link_token = LinkToken.deploy({"from": get_owner_accout()})
+    VRFCoordinatorMock.deploy(link_token.address, {"from": get_owner_accout()})
