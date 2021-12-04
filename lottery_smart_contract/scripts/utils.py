@@ -7,6 +7,7 @@ from brownie import (
     VRFCoordinatorMock,
     LinkToken,
 )
+from brownie.network import web3
 from brownie.network.main import show_active
 
 
@@ -68,3 +69,13 @@ def deploy_contracts():
     MockV3Aggregator.deploy(8, 4530_00_000_000, {"from": get_owner_accout()})
     link_token = LinkToken.deploy({"from": get_owner_accout()})
     VRFCoordinatorMock.deploy(link_token.address, {"from": get_owner_accout()})
+
+
+def fund_with_link(
+    contract_addr, account=None, link_token=None, amount=web3.toWei(0.1, "ether")
+):
+    account = account if account else get_owner_accout()
+    link_token = link_token if link_token else get_contract("LinkToken")
+    tx = link_token.transfer(contract_addr, amount, {"from": account})
+    tx.wait(1)
+    return tx

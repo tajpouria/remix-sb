@@ -9,7 +9,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract Lottery is VRFConsumerBase, Ownable {
     uint256 public usdThreshold = 50 * 10**18;
     AggregatorV3Interface private priceFeedInterface;
-    address payable[] players;
+    address payable[] public players;
+    address payable public recentWinner;
     enum LotteryState {
         Opened,
         CalculatingWinner,
@@ -76,6 +77,7 @@ contract Lottery is VRFConsumerBase, Ownable {
         _requestId;
 
         address payable winnerPlayer = players[_randomness % players.length];
+        recentWinner = winnerPlayer;
         winnerPlayer.transfer(address(this).balance);
         players = new address payable[](0);
         lotteryState = LotteryState.Closed;
