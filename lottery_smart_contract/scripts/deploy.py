@@ -27,7 +27,9 @@ def open_lottery(lottery):
 
 
 def enter_lottery(lottery):
-    lottery.enterLottery({"from": get_owner_accout()}).wait(1)
+    lottery.enterLottery(
+        {"from": get_owner_accout(), "value": lottery.getEntranceFee()}
+    ).wait(1)
 
 
 def close_lottery(lottery):
