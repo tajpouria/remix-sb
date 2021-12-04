@@ -7,6 +7,8 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Lottery is VRFConsumerBase, Ownable {
+    event RequestedRandomness(bytes32 requestId);
+
     uint256 public usdThreshold = 50 * 10**18;
     AggregatorV3Interface private priceFeedInterface;
     address payable[] public players;
@@ -16,7 +18,7 @@ contract Lottery is VRFConsumerBase, Ownable {
         CalculatingWinner,
         Closed
     }
-    LotteryState private lotteryState;
+    LotteryState public lotteryState;
 
     bytes32 internal keyHash;
     uint256 internal fee = 0.1 * 10**18;
@@ -45,7 +47,7 @@ contract Lottery is VRFConsumerBase, Ownable {
             "Lottery is not opened yet"
         );
         require(
-            msg.value < getEntranceFee(),
+            msg.value >= getEntranceFee(),
             "Staked amount must be grater than entrance fee"
         );
 
@@ -66,7 +68,9 @@ contract Lottery is VRFConsumerBase, Ownable {
             "Lottery is not opened yet"
         );
 
-        requestRandomness(keyHash, fee);
+        bytes32 requestId = requestRandomness(keyHash, fee);
+        emit RequestedRandomness(requestId);
+
         lotteryState = LotteryState.CalculatingWinner;
     }
 
@@ -76,9 +80,15 @@ contract Lottery is VRFConsumerBase, Ownable {
     {
         _requestId;
 
+        require(
+            lotteryState == LotteryState.CalculatingWinner,
+            "Lottery is must be in calculating winner state"
+        );
+
         address payable winnerPlayer = players[_randomness % players.length];
-        recentWinner = winnerPlayer;
         winnerPlayer.transfer(address(this).balance);
+        recentWinner = winnerPlayer;
+
         players = new address payable[](0);
         lotteryState = LotteryState.Closed;
     }

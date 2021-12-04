@@ -1,3 +1,4 @@
+from os import error
 from brownie import (
     accounts,
     network,
@@ -9,6 +10,9 @@ from brownie import (
 )
 from brownie.network import web3
 from brownie.network.main import show_active
+
+
+USD_PRICE_FEED_INITIAL_ANSWER = 4530_00_000_000
 
 
 def get_key_hash():
@@ -36,6 +40,10 @@ def get_owner_accout() -> network.account.LocalAccount:
         return accounts[0]
 
     return accounts.add(config["wallets"][network.show_active()]["owner_private_key"])
+
+
+def get_local_accout(index: str) -> network.account.LocalAccount:
+    return accounts[index]
 
 
 def get_contract(
@@ -66,7 +74,9 @@ def get_contract(
 
 
 def deploy_contracts():
-    MockV3Aggregator.deploy(8, 4530_00_000_000, {"from": get_owner_accout()})
+    MockV3Aggregator.deploy(
+        8, USD_PRICE_FEED_INITIAL_ANSWER, {"from": get_owner_accout()}
+    )
     link_token = LinkToken.deploy({"from": get_owner_accout()})
     VRFCoordinatorMock.deploy(link_token.address, {"from": get_owner_accout()})
 
