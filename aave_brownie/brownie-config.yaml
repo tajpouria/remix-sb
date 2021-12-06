@@ -1,0 +1,13 @@
+dotenv: .env
+networks:
+  development: {}
+  rinkeby:
+    verify: True
+  kovan:
+    weth_token: "0xd0a1e359811322d97991e03f863a0c30c2cf029c"
+    verify: True
+wallets:
+  rinkeby:
+    owner_private_key: ${RINKEBY_OWNER_PRIVATE_KEY}
+  kovan:
+    owner_private_key: ${KOVAN_OWNER_PRIVATE_KEY}
