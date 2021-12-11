@@ -1,0 +1,11 @@
+{
+  "name": "Plant",
+  "description": "An Adorable Plant!",
+  "image": "https://ipfs.io/ipfs/QmY7SkBADmFi1CE8PMUGmwPHgS9B14MoD9mFxerhN9dJqT",
+  "attributes": [
+    {
+      "trait_type": "freshness",
+      "value": 85
+    }
+  ]
+}
